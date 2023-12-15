@@ -58,8 +58,10 @@ export default {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
+
           options: {
             cacheDirectory: true,
+            presets: ['@babel/preset-env', '@babel/preset-react'],
             plugins: [
               'transform-class-properties',
               'transform-es2015-classes',
@@ -212,25 +214,26 @@ export default {
 
   devServer: {
     port,
-    publicPath,
+    // publicPath,
     compress: true,
-    noInfo: true,
-    stats: 'errors-only',
-    inline: true,
+    client: {
+      logging: 'error'
+    },
     hot: true,
     headers: { 'Access-Control-Allow-Origin': '*' },
-    contentBase: path.join(__dirname, 'dist'),
-    watchOptions: {
-      aggregateTimeout: 300,
-      ignored: /node_modules/,
-      poll: 100,
+    static: {
+      directory: path.join(__dirname, 'dist'),
+      watch: {
+        ignored: /node_modules/,
+        aggregateTimeout: 300,
+        poll: 100,
+      },
     },
     historyApiFallback: {
       verbose: true,
       disableDotRule: false,
     },
-  
-    onBeforeSetupMiddleware(devServer) {
+    onBeforeSetupMiddleware: function (devServer) {
       if (process.env.START_HOT) {
         console.log('Starting Main Process...');
         spawn(
@@ -238,8 +241,8 @@ export default {
           ['run', 'start-main-dev'],
           { shell: true, env: process.env, stdio: 'inherit' }
         )
-          .on('close', (code) => process.exit(code))
-          .on('error', (spawnError) => console.error(spawnError));
+        .on('close', (code) => process.exit(code))
+        .on('error', (spawnError) => console.error(spawnError));
       }
     },
   },
