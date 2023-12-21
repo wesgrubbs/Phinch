@@ -1,13 +1,16 @@
+/* eslint-disable import/first */
 /**
  * Base webpack config used across other specific configs
  */
 
-import path from "path";
-import webpack from "webpack";
-import { dependencies as externals } from "./app/package.json";
+require("@babel/register");
 
-export default {
-  externals: Object.keys(externals || {}),
+const path = require("path");
+const webpack = require("webpack");
+const packageFile = require("./app/package.json");
+
+module.exports = {
+  externals: Object.keys(packageFile.dependencies || {}),
 
   module: {
     rules: [
