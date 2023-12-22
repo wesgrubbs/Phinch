@@ -8,13 +8,14 @@
         "corejs": 3
       }
     ],
-    "@babel/preset-react"
+    "@babel/preset-react",
+    "@babel/preset-flow"
   ],
   "env": {
-    "production": {
-      "presets": ["@babel/preset-react"]
-      // "plugins": ["@babel/plugin-transform-react-jsx-source"]
-    },
+    // "production": {
+    //   "presets": ["@babel/preset-react"]
+    //   // "plugins": ["@babel/plugin-transform-react-jsx-source"]
+    // },
     "development": {
       "plugins": ["@babel/plugin-transform-classes"]
     }

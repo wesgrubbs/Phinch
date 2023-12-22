@@ -9,14 +9,12 @@ const path = require("path");
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-const merge = require("webpack-merge");
 const TerserPlugin = require("terser-webpack-plugin");
-const baseConfig = require("./webpack.config.base");
 const CheckNodeEnv = require("./internals/scripts/CheckNodeEnv");
 
 CheckNodeEnv("production");
 
-module.exports = merge.smart(baseConfig, {
+module.exports = {
   mode: "production",
 
   devtool: "source-map",
@@ -25,7 +23,12 @@ module.exports = merge.smart(baseConfig, {
 
   entry: "./app/index",
 
-  optimizer: {
+  resolve: {
+    extensions: [".js", ".jsx", ".json"],
+    modules: [path.join(__dirname, "app"), "node_modules"]
+  },
+
+  optimization: {
     minimizer: [
       new TerserPlugin({
         parallel: true,
@@ -42,71 +45,75 @@ module.exports = merge.smart(baseConfig, {
 
   module: {
     rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            cacheDirectory: true,
+            presets: [
+              "@babel/preset-env",
+              "@babel/preset-react",
+              "@babel/preset-flow"
+            ]
+          }
+        }
+      },
       // Extract all .global.css to style.css as is
       {
         test: /\.global\.css$/,
-        use: MiniCssExtractPlugin.extract({
-          publicPath: "./",
-          use: [
-            MiniCssExtractPlugin.loader,
-            {
-              loader: "css-loader",
-              options: {
-                minimize: true
-              }
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: "./"
             }
-          ],
-          fallback: "style-loader"
-        })
+          },
+          "css-loader"
+        ]
       },
       // Pipe other styles through css modules and append to style.css
       {
         test: /^((?!\.global).)*\.css$/,
-        use: ExtractTextPlugin.extract({
-          use: {
-            loader: "css-loader",
-            options: {
-              modules: true,
-              minimize: true,
-              importLoaders: 1,
-              localIdentName: "[name]__[local]__[hash:base64:5]"
-            }
-          }
-        })
+        use: [
+          // MiniCssExtractPlugin.loader,
+          "css-loader"
+        ]
       },
       // Add SASS support  - compile all .global.scss files and pipe it to style.css
       {
         test: /\.global\.(scss|sass)$/,
-        use: ExtractTextPlugin.extract({
-          use: [
-            {
-              loader: "css-loader",
-              options: {
-                minimize: true
-              }
-            },
-            {
-              loader: "sass-loader"
-            }
-          ],
-          fallback: "style-loader"
-        })
+        // use: ExtractTextPlugin.extract({
+        //   use: [
+        //     {
+        //       loader: "css-loader",
+        //       options: {
+        //         minimize: true
+        //       }
+        //     },
+        //     {
+        //       loader: "sass-loader"
+        //     }
+        //   ],
+        //   fallback: "style-loader"
+        // })
+        use: ["sass-loader"]
       },
       // Add SASS support  - compile all other .scss files and pipe it to style.css
       {
         test: /^((?!\.global).)*\.(scss|sass)$/,
         use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: "css-loader",
-            options: {
-              modules: {
-                localIdentName: "[name]__[local]__[hash:base64:5]"
-              },
-              importLoaders: 1,
-              minimize: true
-            }
-          },
+          // {
+          //   loader: MiniCssExtractPlugin.loader,
+          //   options: {
+          //     esModule: true,
+          //     modules: {
+          //       namedExport: true,
+          //       localIdentName: "[name]__[local]__[hash:base64:5]"
+          //     }
+          //   }
+          // },
           "sass-loader"
         ]
       },
@@ -163,6 +170,18 @@ module.exports = merge.smart(baseConfig, {
       {
         test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
         use: "url-loader"
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              limit: 8192, // You can adjust this limit based on your needs
+              name: "images/[name].[hash:8].[ext]"
+            }
+          }
+        ]
       }
     ]
   },
@@ -191,4 +210,4 @@ module.exports = merge.smart(baseConfig, {
       openAnalyzer: process.env.OPEN_ANALYZER === "true"
     })
   ]
-});
+};

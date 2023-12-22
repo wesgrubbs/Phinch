@@ -7,10 +7,10 @@ require("@babel/register");
 
 const path = require("path");
 const webpack = require("webpack");
-const packageFile = require("./app/package.json");
+const { dependencies } = require("./app/package.json");
 
 module.exports = {
-  externals: Object.keys(packageFile.dependencies || {}),
+  externals: Object.keys(dependencies || {}),
 
   module: {
     rules: [
