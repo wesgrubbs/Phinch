@@ -1,5 +1,5 @@
 // @flow
-import chalk from "chalk";
+import chalk from 'chalk';
 
 module.exports = function CheckNodeEnv(expectedEnv: string) {
   if (!expectedEnv) {

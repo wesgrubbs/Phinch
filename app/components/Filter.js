@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { FixedSizeList as List } from 'react-window';
 
-import Spotlight from "rc-spotlight";
+import Spotlight from 'rc-spotlight';
 import 'antd/dist/antd.css';
 import { Tooltip } from 'antd';
 import ReactTooltip from 'react-tooltip';
@@ -10,7 +10,7 @@ import SpotlightWithToolTip from './SpotlightWithToolTip';
 
 import _debounce from 'lodash.debounce';
 import _cloneDeep from 'lodash.clonedeep';
-import classNames from 'classnames'
+import classNames from 'classnames';
 import stackedbar from 'images/stackedbar.svg';
 import bubblegraph from 'images/bubblegraph.svg';
 import sankeygraph from 'images/sankeygraph.svg';
@@ -98,7 +98,7 @@ export default class Filter extends Component {
       sortKey: 'biomid',
       helpButton: needHelp,
       deleting: false,
-      counter: 0, //tracks what help step we are on to allow global click advance
+      counter: 0, // tracks what help step we are on to allow global click advance
       selectedVisualization: 'stackedbar',
     };
 
@@ -186,9 +186,9 @@ export default class Filter extends Component {
     }
 
     if (this.init && this.init.selectedVisualization) {
-      const validVisuals = ['sankey', 'stackedbar', 'bubblegraph']
+      const validVisuals = ['sankey', 'stackedbar', 'bubblegraph'];
       if (validVisuals.includes(this.init.selectedVisualization)) {
-        this.state.selectedVisualization = this.init.selectedVisualization
+        this.state.selectedVisualization = this.init.selectedVisualization;
       }
     }
     DataContainer.setAttributes(this.state.filters);
@@ -222,11 +222,11 @@ export default class Filter extends Component {
   }
 
   componentDidUpdate() {
-    ReactTooltip.rebuild()
+    ReactTooltip.rebuild();
   }
 
   countUp() {
-    if(this.state.counter > 0) {
+    if (this.state.counter > 0) {
       const currCount = this.state.counter;
       const newCount = currCount + 1;
       newCount > 8 ? this.setState({ counter: 1, }) : this.setState({ counter: newCount, });
@@ -312,8 +312,10 @@ export default class Filter extends Component {
           tabIndex={0}
           className={styles.columnHeading}
           // This -300 from the width is so drag and close buttons are always visible
-          style={{ width: (this.metrics.tableWidth - 300) * this.columnWidths[c.id],
-                   textAlign: c.id === 'biomid' || c.id ==='reads' ? 'right':'left', }}
+          style={{
+ width: (this.metrics.tableWidth - 300) * this.columnWidths[c.id],
+                   textAlign: c.id === 'biomid' || c.id === 'reads' ? 'right' : 'left',
+}}
           onClick={onClick}
           onKeyPress={e => (e.key === ' ' ? onClick() : null)}
         >
@@ -540,7 +542,7 @@ export default class Filter extends Component {
         dataKey="sampleName"
         itemHeight={28}
         badge
-        />);
+    />);
   }
 
   updatePhinchName(e, r) {
@@ -670,65 +672,65 @@ export default class Filter extends Component {
     return (
       <div className={gstyle.helpIcons}>
         <div
-        role="button"
-        className={gstyle.helpIcons}
-        style={{ marginRight: '4em'}}
-        onClick={() => {this.setState({ counter: 0 }); this.forceUpdate(); this.deleteBackdropTooltip()} }
+          role="button"
+          className={gstyle.helpIcons}
+          style={{ marginRight: '4em' }}
+          onClick={() => { this.setState({ counter: 0 }); this.forceUpdate(); this.deleteBackdropTooltip(); }}
         >
           <img src={closeHelp} alt="close-walkthrough" />
         </div>
 
         <div
-        role="button"
-        tabIndex={0}
-        className={gstyle.helpIcons}
-        onClick={() => this.setState({ counter: 8 })}
+          role="button"
+          tabIndex={0}
+          className={gstyle.helpIcons}
+          onClick={() => this.setState({ counter: 8 })}
         >
           <img src={this.state.counter == 1 ? help1Hover : help1} />
         </div>
 
         <div
-        role="button"
-        tabIndex={0}
-        className={gstyle.helpIcons}
-        onClick={() => this.setState({ counter: 1 })}
+          role="button"
+          tabIndex={0}
+          className={gstyle.helpIcons}
+          onClick={() => this.setState({ counter: 1 })}
         >
           <img src={this.state.counter == 2 ? help2Hover : help2} />
         </div>
 
         <div
-        role="button"
-        tabIndex={0}
-        className={gstyle.helpIcons}
-        onClick={() => this.setState({ counter: 2 })}
+          role="button"
+          tabIndex={0}
+          className={gstyle.helpIcons}
+          onClick={() => this.setState({ counter: 2 })}
         >
           <img src={this.state.counter == 3 ? help3Hover : help3} />
         </div>
 
         <div
-        role="button"
-        tabIndex={0}
-        className={gstyle.helpIcons}
-        onClick={() => this.setState({ counter: 3 })}
+          role="button"
+          tabIndex={0}
+          className={gstyle.helpIcons}
+          onClick={() => this.setState({ counter: 3 })}
         >
           <img src={this.state.counter == 4 ? help4Hover : help4} />
         </div>
 
         <div
-        role="button"
-        tabIndex={0}
-        className={gstyle.helpIcons}
-        onClick={() => this.setState({ counter: 4 })}
+          role="button"
+          tabIndex={0}
+          className={gstyle.helpIcons}
+          onClick={() => this.setState({ counter: 4 })}
 
         >
           <img src={this.state.counter == 5 ? help5Hover : help5} />
         </div>
 
         <div
-        role="button"
-        tabIndex={0}
-        className={gstyle.helpIcons}
-        onClick={() => this.setState({ counter: 5 })}
+          role="button"
+          tabIndex={0}
+          className={gstyle.helpIcons}
+          onClick={() => this.setState({ counter: 5 })}
         >
           <img src={this.state.counter == 6 ? help6Hover : help6} />
         </div>
@@ -740,23 +742,24 @@ export default class Filter extends Component {
             To explore the 'Archived Samples' feature more, please use the{' '}
             navigation bar in the bottom left to close the walkthrough. {' '}
             Once closed, delete at least 1 sample row by clicking the 'X' on the far right{' '}
-            of the rows that is visible when the row is hovered. Then return to feature 7. </div>}
-          >
+            of the rows that is visible when the row is hovered. Then return to feature 7.
+          </div>}
+        >
           <div
-          role="button"
-          tabIndex={0}
-          className={gstyle.helpIcons}
-          onClick={() => {this.setState({ counter: 6 }); this.renderModal();}}
+            role="button"
+            tabIndex={0}
+            className={gstyle.helpIcons}
+            onClick={() => { this.setState({ counter: 6 }); this.renderModal(); }}
           >
             <img src={this.state.counter == 7 ? help7Hover : help7} />
           </div>
         </SpotlightWithToolTip>
 
         <div
-        role="button"
-        tabIndex={0}
-        className={gstyle.helpIcons}
-        onClick={() => {this.setState({ counter: 7 }); this.forceUpdate();}}
+          role="button"
+          tabIndex={0}
+          className={gstyle.helpIcons}
+          onClick={() => { this.setState({ counter: 7 }); this.forceUpdate(); }}
         >
           <img src={this.state.counter == 8 ? help8Hover : help8} />
         </div>
@@ -764,25 +767,25 @@ export default class Filter extends Component {
     );
   }
 
-  /*This function deals with when the mouse hovers over the browse icon on top right of
+  /* This function deals with when the mouse hovers over the browse icon on top right of
    and changes img src accordingly to correct svg file */
-   handleMouseOver (button) {
-    switch(button) {
-      case "help":
-        if(this.state.helpButton === needHelp) {
-          this.setState({helpButton: needHelpHover});
+  handleMouseOver(button) {
+    switch (button) {
+      case 'help':
+        if (this.state.helpButton === needHelp) {
+          this.setState({ helpButton: needHelpHover });
         }
         break;
     }
   }
 
-  /*This function deals with the mouse leaving an icon (no longer hovering) and
+  /* This function deals with the mouse leaving an icon (no longer hovering) and
   changed img src to correct svg file */
-  handleMouseLeave (button) {
-    switch(button) {
-      case "help":
-        if(this.state.helpButton === needHelpHover) {
-          this.setState({helpButton: needHelp});
+  handleMouseLeave(button) {
+    switch (button) {
+      case 'help':
+        if (this.state.helpButton === needHelpHover) {
+          this.setState({ helpButton: needHelp });
         }
         break;
     }
@@ -824,7 +827,7 @@ export default class Filter extends Component {
 
     const viewVisualization = () => {
       if (!this.state.selectedVisualization) {
-        return
+        return;
       }
       this.setState({ loading: true }, () => {
         setTimeout(() => {
@@ -841,8 +844,8 @@ export default class Filter extends Component {
     const setSelectedVisualization = (visualization) => () => {
       this.setState({ selectedVisualization: visualization }, () => {
         this.save(this.setResult);
-      })
-    }
+      });
+    };
 
     return (
       <div className={`${gstyle.container} ${notMac}`}>
@@ -858,10 +861,10 @@ export default class Filter extends Component {
               className={gstyle.help}
               // on click command is still undefined outside of home page, set to issues page for now until later
               onClick={() => this.setState({ counter: 8 })}
-              onMouseEnter={() => this.handleMouseOver("help")}
-              onMouseLeave={() => this.handleMouseLeave("help")}
-              >
-                <img src={this.state.helpButton} alt="needHelp" />
+              onMouseEnter={() => this.handleMouseOver('help')}
+              onMouseLeave={() => this.handleMouseLeave('help')}
+            >
+              <img src={this.state.helpButton} alt="needHelp" />
             </button>
           </div>
           <div className={gstyle.header}>
@@ -870,13 +873,13 @@ export default class Filter extends Component {
               observations={this.state.observations}
               datalength={this.state.data.length}
               helping={this.state.counter == 2}
-              />
+            />
 
             <SpotlightWithToolTip
               isActive={this.state.counter == 3}
               inheritParentBackgroundColor={false}
               toolTipPlacement="bottomRight"
-              toolTipTitle={<div style={{ marginRight: '1em'}}>
+              toolTipTitle={<div style={{ marginRight: '1em' }}>
                 The uploaded data file can be explored through a number{' '}
                 of distinct visualization types.
                 <br /><br />
@@ -884,22 +887,26 @@ export default class Filter extends Component {
                 and then click “View Visualization” to see the graphs made by the option{' '}
                 you choose.
               </div>}
-              style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', boxShadow: 'inset rgba(255, 255, 255, 0.5) 0px 0px 10px'}}
+              style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', boxShadow: 'inset rgba(255, 255, 255, 0.5) 0px 0px 10px' }}
             >
               <div>
                 <div className={styles.visRowLabel}>Visualization Type</div>
                 <div className={styles.visOption} onClick={setSelectedVisualization('stackedbar')}>
                   <img src={stackedbar} alt="Stacked bargraph" />
-                  <div className={classNames(styles.visOptionLabel, { [styles.selected]: this.state.selectedVisualization === 'stackedbar'})}
-                    id="stackedgraph" >Stacked Bargraph</div>
+                  <div
+                    className={classNames(styles.visOptionLabel, { [styles.selected]: this.state.selectedVisualization === 'stackedbar' })}
+                    id="stackedgraph"
+                  >Stacked Bargraph
+                  </div>
                 </div>
                 <div className={styles.visOption} onClick={setSelectedVisualization('sankey')}>
                   <img src={sankeygraph} alt="Sankey bargraph" id="sankeygraph" />
                   <div
-                    className={classNames(styles.visOptionLabel, { [styles.selected]: this.state.selectedVisualization === 'sankey'})}
-                  >Sankey Graph</div>
+                    className={classNames(styles.visOptionLabel, { [styles.selected]: this.state.selectedVisualization === 'sankey' })}
+                  >Sankey Graph
+                  </div>
                 </div>
-                <div className={styles.futureVis} data-tip={'This visualization will be available in a future Phinch release.'}>
+                <div className={styles.futureVis} data-tip="This visualization will be available in a future Phinch release.">
                   <img src={bubblegraph} alt="Bubble Graph" id="bubblegraph" />
                   <div className={styles.visOptionLabel}>Bubble Graph</div>
                 </div>
@@ -910,10 +917,10 @@ export default class Filter extends Component {
                   className={classNames(gstyle.button, styles.button, { [styles.buttonDisabled]: !this.state.selectedVisualization })}
                   onClick={viewVisualization}
                   onKeyPress={e => (e.key === ' ' ? viewVisualization() : null)}
-                  onMouseEnter={this.state.selectedVisualization ? () =>  this.handleMouseOver("viewViz") : null}
-                  onMouseLeave={this.state.selectedVisualization ? () => this.handleMouseLeave("viewViz") : null}
+                  onMouseEnter={this.state.selectedVisualization ? () => this.handleMouseOver('viewViz') : null}
+                  onMouseLeave={this.state.selectedVisualization ? () => this.handleMouseLeave('viewViz') : null}
                   data-tip={this.state.selectedVisualization ? null : 'Please select a visualization type'}
-                  >
+                >
                   View Visualization
                 </div>
               </div>
@@ -929,7 +936,7 @@ export default class Filter extends Component {
                       )
                       ) - 100,
                     }}
-                    />
+              />
               {this.renderHeader()}
             </div>
           </div>
@@ -943,14 +950,14 @@ export default class Filter extends Component {
             items={this.menuItems}
             toggleMenu={this.toggleMenu}
             spotlight={this.state.counter == 8}
-            />
+          />
           <SpotlightWithToolTip
-            isActive = {this.state.counter == 1}
+            isActive={this.state.counter == 1}
             inheritParentBackgroundColor={false}
             toolTipPlacement="topLeft"
-            toolTipTitle={"All metadata (left column) and sample info (right columns) are loaded FROM THE FILE ITSELF, and the app dynamically populates all this information after file upload. "}
-            overlayStyle={{zIndex: '1001'}}
-            style={{backgroundColor: '#ffffff', boxShadow: 'none'}}
+            toolTipTitle="All metadata (left column) and sample info (right columns) are loaded FROM THE FILE ITSELF, and the app dynamically populates all this information after file upload. "
+            overlayStyle={{ zIndex: '1001' }}
+            style={{ backgroundColor: '#ffffff', boxShadow: 'none' }}
           >
 
             <div
@@ -984,31 +991,32 @@ export default class Filter extends Component {
                   Changing filter selections in this panel will cause the sample list{' '}
                   to automatically update, displaying only those samples that meet the{' '}
                   chosen filtering selections.
-                  </div>
+                </div>
                   :
-                  <div>
-                    If you would like to reset the filters, scroll all the way down{' '}
-                    on the left column to find the “Reset Filters” button.
-                  </div>}
-                  overlayStyle={{maxWidth: '600px'}}
-                  style={{ boxShadow: 'none'}}
-                  >
-                  <div style={{
+                <div>
+                  If you would like to reset the filters, scroll all the way down{' '}
+                  on the left column to find the “Reset Filters” button.
+                </div>}
+                overlayStyle={{ maxWidth: '600px' }}
+                style={{ boxShadow: 'none' }}
+              >
+                <div style={{
                     height: (this.state.counter == 4 || this.state.counter == 5 ? this.state.height - 260 : 'auto'),
                     overflowY: (this.state.counter == 4 || this.state.counter == 5 ? 'hidden' : 'overlay'),
-                  }}>
-                    {this.displayFilters()}
-                    <div
-                      role="button"
-                      id="reset"
-                      tabIndex={0}
-                      className={`${gstyle.button} ${styles.reset}`}
-                      onClick={this.resetFilters}
-                      onKeyPress={e => (e.key === ' ' ? this.resetFilters() : null)}
-                    >
-                      Reset Filters
-                    </div>
+                  }}
+                >
+                  {this.displayFilters()}
+                  <div
+                    role="button"
+                    id="reset"
+                    tabIndex={0}
+                    className={`${gstyle.button} ${styles.reset}`}
+                    onClick={this.resetFilters}
+                    onKeyPress={e => (e.key === ' ' ? this.resetFilters() : null)}
+                  >
+                    Reset Filters
                   </div>
+                </div>
               </SpotlightWithToolTip>
             </div>
             <div
@@ -1035,10 +1043,11 @@ export default class Filter extends Component {
                   a long press of the mouse on the “up/down arrow” button on the left, or{' '}
                   remove the sample from the pool by the “delete” button on the right{' '}
                   (After the sample is manually removed, it will be listed under{' '}
-                  “Archived Sample” at the bottom). </div> : ''}
-                  overlayStyle={{width: '250px', paddingBottom: '5rem'}}
-                  style={this.state.counter == 8 ? {zIndex: 0} : ''}
-                  >
+                  “Archived Sample” at the bottom).
+                </div> : ''}
+                overlayStyle={{ width: '250px', paddingBottom: '5rem' }}
+                style={this.state.counter == 8 ? { zIndex: 0 } : ''}
+              >
                 <List
                   className={`${styles.divlist}`}
                   width={this.metrics.tableWidth}
@@ -1046,7 +1055,7 @@ export default class Filter extends Component {
                   itemSize={28}
                   itemCount={this.state.data.length}
                   itemKey={index => this.state.data[index].sampleName}
-                  >
+                >
                   {this.tableRow}
                 </List>
                 {this.renderModal()}
@@ -1054,12 +1063,12 @@ export default class Filter extends Component {
             </div>
           </SpotlightWithToolTip>
           <SpotlightWithToolTip
-            isActive = {this.state.counter > 0}
+            isActive={this.state.counter > 0}
             inheritParentBackgroundColor={false}
-            toolTipTitle={" *mouse click anywhere to advance"}
-            overlayStyle={{zIndex: '1001'}}
-            innerStyle={{color: 'white', fontWeight: '400', fontSize: '14px'}}
-            style={{boxShadow: 'none'}}
+            toolTipTitle=" *mouse click anywhere to advance"
+            overlayStyle={{ zIndex: '1001' }}
+            innerStyle={{ color: 'white', fontWeight: '400', fontSize: '14px' }}
+            style={{ boxShadow: 'none' }}
           >
             <div className={gstyle.helpButtons}>
               {helpButtons}

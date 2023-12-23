@@ -1,5 +1,5 @@
 // @flow
-import { app, Menu, shell, BrowserWindow } from "electron";
+import { app, Menu, shell, BrowserWindow } from 'electron';
 
 export default class MenuBuilder {
   mainWindow;
@@ -10,14 +10,14 @@ export default class MenuBuilder {
 
   buildMenu() {
     if (
-      process.env.NODE_ENV === "development" ||
-      process.env.DEBUG_PROD === "true"
+      process.env.NODE_ENV === 'development' ||
+      process.env.DEBUG_PROD === 'true'
     ) {
       this.setupDevelopmentEnvironment();
     }
 
     const template =
-      process.platform === "darwin"
+      process.platform === 'darwin'
         ? this.buildDarwinTemplate()
         : this.buildDefaultTemplate();
 
@@ -29,12 +29,12 @@ export default class MenuBuilder {
 
   setupDevelopmentEnvironment() {
     this.mainWindow.openDevTools();
-    this.mainWindow.webContents.on("context-menu", (e, props) => {
+    this.mainWindow.webContents.on('context-menu', (e, props) => {
       const { x, y } = props;
 
       Menu.buildFromTemplate([
         {
-          label: "Inspect element",
+          label: 'Inspect element',
           click: () => {
             this.mainWindow.inspectElement(x, y);
           },
@@ -45,21 +45,21 @@ export default class MenuBuilder {
 
   buildDarwinTemplate() {
     const subMenuAbout = {
-      label: "Phinch",
+      label: 'Phinch',
       submenu: [
-        { label: "About Phinch", selector: "orderFrontStandardAboutPanel:" },
-        { type: "separator" },
-        { label: "Hide Phinch", accelerator: "Command+H", selector: "hide:" },
+        { label: 'About Phinch', selector: 'orderFrontStandardAboutPanel:' },
+        { type: 'separator' },
+        { label: 'Hide Phinch', accelerator: 'Command+H', selector: 'hide:' },
         {
-          label: "Hide Others",
-          accelerator: "Command+Shift+H",
-          selector: "hideOtherApplications:",
+          label: 'Hide Others',
+          accelerator: 'Command+Shift+H',
+          selector: 'hideOtherApplications:',
         },
-        { label: "Show All", selector: "unhideAllApplications:" },
-        { type: "separator" },
+        { label: 'Show All', selector: 'unhideAllApplications:' },
+        { type: 'separator' },
         {
-          label: "Quit",
-          accelerator: "Command+Q",
+          label: 'Quit',
+          accelerator: 'Command+Q',
           click: () => {
             app.quit();
           },
@@ -67,41 +67,41 @@ export default class MenuBuilder {
       ],
     };
     const subMenuEdit = {
-      label: "Edit",
+      label: 'Edit',
       submenu: [
-        { label: "Undo", accelerator: "Command+Z", selector: "undo:" },
-        { label: "Redo", accelerator: "Shift+Command+Z", selector: "redo:" },
-        { type: "separator" },
-        { label: "Cut", accelerator: "Command+X", selector: "cut:" },
-        { label: "Copy", accelerator: "Command+C", selector: "copy:" },
-        { label: "Paste", accelerator: "Command+V", selector: "paste:" },
+        { label: 'Undo', accelerator: 'Command+Z', selector: 'undo:' },
+        { label: 'Redo', accelerator: 'Shift+Command+Z', selector: 'redo:' },
+        { type: 'separator' },
+        { label: 'Cut', accelerator: 'Command+X', selector: 'cut:' },
+        { label: 'Copy', accelerator: 'Command+C', selector: 'copy:' },
+        { label: 'Paste', accelerator: 'Command+V', selector: 'paste:' },
         {
-          label: "Select All",
-          accelerator: "Command+A",
-          selector: "selectAll:",
+          label: 'Select All',
+          accelerator: 'Command+A',
+          selector: 'selectAll:',
         },
       ],
     };
     const subMenuView = {
-      label: "View",
+      label: 'View',
       submenu: [
         {
-          label: "Reload",
-          accelerator: "Command+R",
+          label: 'Reload',
+          accelerator: 'Command+R',
           click: () => {
             this.mainWindow.webContents.reload();
           },
         },
         {
-          label: "Toggle Full Screen",
-          accelerator: "Ctrl+Command+F",
+          label: 'Toggle Full Screen',
+          accelerator: 'Ctrl+Command+F',
           click: () => {
             this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
           },
         },
         {
-          label: "Toggle Developer Tools",
-          accelerator: "Alt+Command+I",
+          label: 'Toggle Developer Tools',
+          accelerator: 'Alt+Command+I',
           click: () => {
             this.mainWindow.toggleDevTools();
           },
@@ -109,36 +109,36 @@ export default class MenuBuilder {
       ],
     };
     const subMenuWindow = {
-      label: "Window",
+      label: 'Window',
       submenu: [
         {
-          label: "Minimize",
-          accelerator: "Command+M",
-          selector: "performMiniaturize:",
+          label: 'Minimize',
+          accelerator: 'Command+M',
+          selector: 'performMiniaturize:',
         },
-        { type: "separator" },
-        { label: "Bring All to Front", selector: "arrangeInFront:" },
+        { type: 'separator' },
+        { label: 'Bring All to Front', selector: 'arrangeInFront:' },
       ],
     };
     const subMenuHelp = {
-      label: "Help",
+      label: 'Help',
       submenu: [
         {
-          label: "Learn More",
+          label: 'Learn More',
           click() {
-            shell.openExternal("http://phinch.org/");
+            shell.openExternal('http://phinch.org/');
           },
         },
         {
-          label: "Community Discussions",
+          label: 'Community Discussions',
           click() {
-            shell.openExternal("http://phinch.org/Community");
+            shell.openExternal('http://phinch.org/Community');
           },
         },
         {
-          label: "Search Issues",
+          label: 'Search Issues',
           click() {
-            shell.openExternal("https://github.com/PhinchApp/Phinch/issues");
+            shell.openExternal('https://github.com/PhinchApp/Phinch/issues');
           },
         },
       ],
@@ -150,11 +150,11 @@ export default class MenuBuilder {
   buildDefaultTemplate() {
     const templateDefault = [
       {
-        label: "&File",
+        label: '&File',
         submenu: [
           {
-            label: "&Close",
-            accelerator: "Ctrl+W",
+            label: '&Close',
+            accelerator: 'Ctrl+W',
             click: () => {
               this.mainWindow.close();
             },
@@ -162,25 +162,25 @@ export default class MenuBuilder {
         ],
       },
       {
-        label: "&View",
+        label: '&View',
         submenu: [
           {
-            label: "&Reload",
-            accelerator: "Ctrl+R",
+            label: '&Reload',
+            accelerator: 'Ctrl+R',
             click: () => {
               this.mainWindow.webContents.reload();
             },
           },
           {
-            label: "Toggle &Full Screen",
-            accelerator: "F11",
+            label: 'Toggle &Full Screen',
+            accelerator: 'F11',
             click: () => {
               this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
             },
           },
           {
-            label: "Toggle &Developer Tools",
-            accelerator: "Alt+Ctrl+I",
+            label: 'Toggle &Developer Tools',
+            accelerator: 'Alt+Ctrl+I',
             click: () => {
               this.mainWindow.toggleDevTools();
             },
@@ -188,24 +188,24 @@ export default class MenuBuilder {
         ],
       },
       {
-        label: "Help",
+        label: 'Help',
         submenu: [
           {
-            label: "Learn More",
+            label: 'Learn More',
             click() {
-              shell.openExternal("http://phinch.org/");
+              shell.openExternal('http://phinch.org/');
             },
           },
           {
-            label: "Community Discussions",
+            label: 'Community Discussions',
             click() {
-              shell.openExternal("http://phinch.org/Community");
+              shell.openExternal('http://phinch.org/Community');
             },
           },
           {
-            label: "Search Issues",
+            label: 'Search Issues',
             click() {
-              shell.openExternal("https://github.com/PhinchApp/Phinch/issues");
+              shell.openExternal('https://github.com/PhinchApp/Phinch/issues');
             },
           },
         ],

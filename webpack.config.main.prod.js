@@ -3,25 +3,25 @@
  * Webpack config for production electron main process
  */
 
-require("@babel/register");
+require('@babel/register');
 
-const webpack = require("webpack");
-const TerserPlugin = require("terser-webpack-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-const CheckNodeEnv = require("./internals/scripts/CheckNodeEnv");
+const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const CheckNodeEnv = require('./internals/scripts/CheckNodeEnv');
 
-CheckNodeEnv("production");
+CheckNodeEnv('production');
 
 module.exports = {
-  mode: "production",
+  mode: 'production',
 
-  target: "electron-main",
+  target: 'electron-main',
 
-  entry: "./app/main.dev",
+  entry: './app/main.dev',
 
   output: {
     path: __dirname,
-    filename: "./app/main.prod.js",
+    filename: './app/main.prod.js',
   },
 
   optimization: {
@@ -39,29 +39,29 @@ module.exports = {
         test: /\.jsx?$/, // .js, .jsx
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             cacheDirectory: true,
             presets: [
               // "@babel/preset-env",
               [
-                "@babel/preset-env",
+                '@babel/preset-env',
                 {
                   targets: { node: 7 },
-                  useBuiltIns: "usage",
+                  useBuiltIns: 'usage',
                   corejs: 3,
                 },
               ],
-              "@babel/preset-react",
-              "@babel/preset-flow",
+              '@babel/preset-react',
+              '@babel/preset-flow',
             ],
             plugins: [
               // Here, we include babel plugins that are only required for the
               // renderer process. The 'transform-*' plugins must be included
               // before react-hot-loader/babel
               // "@babel/plugin-transform-classes",
-              "@babel/plugin-proposal-class-properties",
-              "./node_modules/react-hot-loader/babel",
+              '@babel/plugin-proposal-class-properties',
+              './node_modules/react-hot-loader/babel',
             ],
           },
         },
@@ -72,8 +72,8 @@ module.exports = {
   plugins: [
     new BundleAnalyzerPlugin({
       analyzerMode:
-        process.env.OPEN_ANALYZER === "true" ? "server" : "disabled",
-      openAnalyzer: process.env.OPEN_ANALYZER === "true",
+        process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',
+      openAnalyzer: process.env.OPEN_ANALYZER === 'true',
     }),
 
     /**
@@ -86,8 +86,8 @@ module.exports = {
      * development checks
      */
     new webpack.EnvironmentPlugin({
-      NODE_ENV: "production",
-      DEBUG_PROD: "false",
+      NODE_ENV: 'production',
+      DEBUG_PROD: 'false',
     }),
   ],
 

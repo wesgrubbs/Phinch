@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { FixedSizeList as List } from 'react-window';
 
-import Spotlight from "rc-spotlight";
+import Spotlight from 'rc-spotlight';
 import 'antd/dist/antd.css';
 import { Tooltip } from 'antd';
 import ReactTooltip from 'react-tooltip';
@@ -64,7 +64,7 @@ import StackedBarsSVG from './StackedBarsSVG';
 import FilterChart from './FilterChart';
 import Summary from './Summary';
 import Modal from './Modal';
-import Sankey from './Sankey/'
+import Sankey from './Sankey/';
 import styles from './Vis.css';
 import gstyle from './general.css';
 import classNames from 'classnames';
@@ -238,9 +238,9 @@ export default class Vis extends Component {
         return t;
       });
       //
-      //this is to allow the programmer to track if all tags are unselected or or least one
-      //is for styling purposes. Likely a better way to do this using data but the function of
-      //all state variables need to be identified first which will take time.
+      // this is to allow the programmer to track if all tags are unselected or or least one
+      // is for styling purposes. Likely a better way to do this using data but the function of
+      // all state variables need to be identified first which will take time.
       // this.state.tagTracker = this.state.tags.map(t => {
       //   if (t.selected === 'true') {
       //     return true;
@@ -292,11 +292,11 @@ export default class Vis extends Component {
     this.toggleRightMenu = this.toggleRightMenu.bind(this);
     this.toggleLog = this.toggleLog.bind(this);
     this.countUpHelp = this.countUpHelp.bind(this);
-    this._isMounted = false
+    this._isMounted = false;
   }
 
   componentDidMount() {
-    this._isMounted = true
+    this._isMounted = true;
     window.addEventListener('resize', this.updateDimensions);
     if (this.initdata) {
       this.formatTaxonomyData(this.initdata, this.state.level, (data) => {
@@ -307,7 +307,6 @@ export default class Vis extends Component {
       });
     }
     window.addEventListener('click', this.countUpHelp);
-
   }
 
   componentDidUpdate() {
@@ -324,7 +323,6 @@ export default class Vis extends Component {
     if (this.state.helpCounter !== 6 && this._visType === 'stackedbar' && this.state.datumClickedViaHelp) {
       this.removeFilter(this.state.datumClickedViaHelp.name);
       this.setState({ datumClickedViaHelp: null });
-
     }
     if (this.state.helpCounter === 7 && this._visType === 'stackedbar' && !this.state.highlightedDatum && !this.state.highlightedDatumFromHelp) {
       this.setState({
@@ -337,13 +335,13 @@ export default class Vis extends Component {
         },
         showTooltip: true,
         highlightedDatumFromHelp: true,
-      })
+      });
     } else if (this.state.helpCounter !== 7 && this._visType === 'stackedbar' && this.state.highlightedDatum && this.state.highlightedDatumFromHelp) {
       this.setState({
         highlightedDatum: null,
         showTooltip: false,
         highlightedDatumFromHelp: false,
-      })
+      });
     }
     if (this.state.helpCounter === 8 && this._visType === 'stackedbar' && !this.state.selectedAttributeFromHelp) {
       const selectedAttribute = Object.keys(this.attributes)[0];
@@ -353,26 +351,24 @@ export default class Vis extends Component {
         selectedAttribute,
         selectedAttributeFromHelp: true,
 
-      })
+      });
     } else if (this.state.helpCounter !== 8 && this._visType === 'stackedbar' && this.state.selectedAttributeFromHelp) {
       this.setState({
         selectedAttribute: '',
         selectedAttributeFromHelp: false,
-      })
+      });
     }
   }
 
   componentWillUnmount() {
-    this._isMounted = false
+    this._isMounted = false;
     clearTimeout(this.tooltip.handle);
     clearTimeout(this.timeout);
     window.removeEventListener('resize', this.updateDimensions);
     window.removeEventListener('click', this.countUpHelp);
-
   }
   countUpHelp() {
-
-    if(this.state.helpCounter > 0) {
+    if (this.state.helpCounter > 0) {
       const currCount = this.state.helpCounter;
       const newCount = currCount + 1;
       // 6 for sankey, 8 for bargraph
@@ -554,17 +550,17 @@ export default class Vis extends Component {
   }
 
   updateChartWidth(_showRightSidebar) {
-    const showRightSidebar = (_showRightSidebar || this.state.overrideRightSidebar === 'open') && !(_showRightSidebar && this.state.overrideRightSidebar === 'close')
+    const showRightSidebar = (_showRightSidebar || this.state.overrideRightSidebar === 'open') && !(_showRightSidebar && this.state.overrideRightSidebar === 'close');
     // console.log('update chart width', { _showRightSidebar, showRightSidebar, overrideRightSidebar: this.state.overrideRightSidebar })
     if (showRightSidebar) {
       this.metrics.chartWidth = window.innerWidth
         - (this.metrics.leftSidebar + this.metrics.rightSidebar + this.metrics.nonbarWidth);
     } else {
       this.metrics.chartWidth = window.innerWidth
-        - (this.metrics.leftSidebar + this.metrics.nonbarWidth );
+        - (this.metrics.leftSidebar + this.metrics.nonbarWidth);
     }
     if (this._isMounted) {
-      this.setState({ chartWidth: this.metrics.chartWidth })
+      this.setState({ chartWidth: this.metrics.chartWidth });
     }
   }
 
@@ -726,32 +722,33 @@ export default class Vis extends Component {
   }
 
   renderSearch() {
-    return <Search
+    return (<Search
       options={this.sequences}
       onValueCleared={this.onValueCleared}
       onSuggestionSelected={this.onSuggestionSelected}
       onSuggestionHighlighted={this.onSuggestionHighlighted}
-    />
+    />);
   }
   renderFilters() {
-    let segments = null
+    let segments = null;
     if (Object.keys(this.state.filters).length && this.state.overrideRightSidebar !== 'close') {
       segments = Object.keys(this.state.filters).map(k => (
         <SpotlightWithToolTip
           isActive={this.state.helpCounter === 6 && this._visType === 'stackedbar'}
-          toolTipPlacement= "left"
+          toolTipPlacement="left"
           toolTipTitle={
-              <div>
-                After clicking a search result, a side bar will appear that shows the distribution of observations for each chosen search result. A mini bar chart for that search result will also appear underneath each main graph.
-                <br /><br />
-                On the side bar, the circles and slider bar underneath each distribution graph can be used as a further filtering mechanisms for rows displayed in the taxonomy bar chart. Only samples meeting the sidebar filtering criteria will remain visible in the main visualization window.
-                The graphs are visualized based on users’ setting on data filtering page, which means the actions taken previously will affect the visualisation shown here.
-                The top sequences box below shows the most abundant observations in your TOTAL dataset, with numerical values calculated after filter page settings have been applied.
-                <br /><br />
-                To remove the graph on the sidebar, simply click the “X” button on the upper right hand side of the sidebar detail. This will also cause the corresponding mini-bar chart to be removed in the main window.
-              </div>
+            <div>
+              After clicking a search result, a side bar will appear that shows the distribution of observations for each chosen search result. A mini bar chart for that search result will also appear underneath each main graph.
+              <br /><br />
+              On the side bar, the circles and slider bar underneath each distribution graph can be used as a further filtering mechanisms for rows displayed in the taxonomy bar chart. Only samples meeting the sidebar filtering criteria will remain visible in the main visualization window.
+              The graphs are visualized based on users’ setting on data filtering page, which means the actions taken previously will affect the visualisation shown here.
+              The top sequences box below shows the most abundant observations in your TOTAL dataset, with numerical values calculated after filter page settings have been applied.
+              <br /><br />
+              To remove the graph on the sidebar, simply click the “X” button on the upper right hand side of the sidebar detail. This will also cause the corresponding mini-bar chart to be removed in the main window.
+            </div>
           }
-          style={{ boxShadow: 'rgba(255, 255, 255, 0.4) 0 0 10px 3px',
+          style={{
+ boxShadow: 'rgba(255, 255, 255, 0.4) 0 0 10px 3px',
             pointerEvents: 'none',
             padding: '0.25rem 0.5rem 0px',
             margin: '0.25rem 0.5rem 0px',
@@ -786,10 +783,11 @@ export default class Vis extends Component {
         </SpotlightWithToolTip>
       ));
     }
-    const rightSidebarOpen = (this.state.showRightSidebar || this.state.overrideRightSidebar === 'open') && !(this.state.showRightSidebar && this.state.overrideRightSidebar === 'close')
+    const rightSidebarOpen = (this.state.showRightSidebar || this.state.overrideRightSidebar === 'open') && !(this.state.showRightSidebar && this.state.overrideRightSidebar === 'close');
     return (
-      <div className={classNames(gstyle.panel, gstyle.noscrollbar, styles.rightPanelContainer, { [styles.rightSidebarOpen]: rightSidebarOpen})}
-        style={{ zIndex: this.state.helpCounter === 6 && this._visType === 'stackedbar' ? 100000 : null}}
+      <div
+        className={classNames(gstyle.panel, gstyle.noscrollbar, styles.rightPanelContainer, { [styles.rightSidebarOpen]: rightSidebarOpen })}
+        style={{ zIndex: this.state.helpCounter === 6 && this._visType === 'stackedbar' ? 100000 : null }}
       >
         <div className={styles.buttonContainer}>
           <div className={styles.toggleSquare} />
@@ -799,7 +797,7 @@ export default class Vis extends Component {
             tabIndex={0}
             className={`
               ${styles.menuToggle}
-              ${this.state.showRightSidebar || (this.state.overrideRightSidebar === 'open'  && this.state.overrideRightSidebar !== 'close') ? styles.closeMenu : styles.openMenu}`}
+              ${this.state.showRightSidebar || (this.state.overrideRightSidebar === 'open' && this.state.overrideRightSidebar !== 'close') ? styles.closeMenu : styles.openMenu}`}
             onClick={this.toggleRightMenu}
             style={{
               display: this.state.helpCounter === 6 && this._visType === 'stackedbar' ? 'none' : null,
@@ -812,9 +810,9 @@ export default class Vis extends Component {
             style={{
               borderTop: '1px solid #262626',
               position: 'fixed',
-              width: this.state.showRightSidebar || (this.state.overrideRightSidebar === 'open'  && this.state.overrideRightSidebar !== 'close') ? this.metrics.rightSidebar + 10 : 0,
+              width: this.state.showRightSidebar || (this.state.overrideRightSidebar === 'open' && this.state.overrideRightSidebar !== 'close') ? this.metrics.rightSidebar + 10 : 0,
               height: this.metrics.chartHeight + (this.metrics.lineHeight * 2),
-              background: "#2D2F31",
+              background: '#2D2F31',
             }}
           >
             {segments}
@@ -835,17 +833,16 @@ export default class Vis extends Component {
     });
   }
   toggleRightMenu() {
-    let newValue = this.state.showRightSidebar ? 'close' : 'open'
+    let newValue = this.state.showRightSidebar ? 'close' : 'open';
     if (newValue === this.state.overrideRightSidebar) {
-      newValue = null
+      newValue = null;
     }
 
     this.setState({
       overrideRightSidebar: newValue
     }, () => {
       this.updateChartWidth(this.state.showRightSidebar);
-    })
-
+    });
   }
 
   onSuggestionSelected(e, { suggestion }) {
@@ -860,7 +857,7 @@ export default class Vis extends Component {
     if (suggestion === null) {
       this.setState({
         highlightedDatum: null,
-      })
+      });
       return;
     }
     const highlightedDatum = {
@@ -872,7 +869,7 @@ export default class Vis extends Component {
     this.setState({
       highlightedDatum,
       showTooltip
-    })
+    });
   }
 
   onValueCleared() {
@@ -1055,14 +1052,15 @@ export default class Vis extends Component {
     return (
       <Spotlight
         isActive={this.state.helpCounter === 8}
-        style={{ boxShadow: 'rgba(255, 255, 255, 0.4) 0 0 10px 3px',
+        style={{
+ boxShadow: 'rgba(255, 255, 255, 0.4) 0 0 10px 3px',
           padding: '0.5em',
           margin: '-0.5em',
           borderRadius: '0.5em',
         }}
 
       >
-        <div className={styles.inlineControl} style={{ opacity: this.state.helpCounter === 8 ? '1' : null}}>
+        <div className={styles.inlineControl} style={{ opacity: this.state.helpCounter === 8 ? '1' : null }}>
           <label htmlFor="attributesSelect">
             {'Attributes '}
             <select
@@ -1236,7 +1234,7 @@ export default class Vis extends Component {
       };
       const checked = this.state.mode === b.id ? 'checked' : '';
       return (
-        <div key={b.id}  className={classNames(styles.inlineControl, { [styles.controlChecked]: checked })}>
+        <div key={b.id} className={classNames(styles.inlineControl, { [styles.controlChecked]: checked })}>
           <label htmlFor={b.id}>
             <input
               type="radio"
@@ -1360,7 +1358,7 @@ export default class Vis extends Component {
                     id={`c-${t.id}`}
                     type="checkbox"
                     checked={t.selected}
-                    onChange={(e) => {this.filterByTag(e, t), this.setActiveTags}}
+                    onChange={(e) => { this.filterByTag(e, t), this.setActiveTags; }}
                     style={{ top: 0, left: '-3px' }}
                   />
                   <span className={gstyle.checkmark} />
@@ -1372,7 +1370,7 @@ export default class Vis extends Component {
                       style={{
                         backgroundColor: t.color,
                         border: 'none',
-                        margin: "0 .25rem 5px",
+                        margin: '0 .25rem 5px',
                         opacity: t.selected ? 1 : 0.5,
                       }}
                     />
@@ -1426,32 +1424,32 @@ export default class Vis extends Component {
               />
             ) : ''))
           }
-          <img style={{marginRight: '6px', width: "10px"}} src={dropDownArrow} />
+          <img style={{ marginRight: '6px', width: '10px' }} src={dropDownArrow} />
         </div>
         {tagFilter}
       </div>
     );
   }
 
-  /*This function deals with when the mouse hovers over the browse icon on top right of
+  /* This function deals with when the mouse hovers over the browse icon on top right of
    and changes img src accordingly to correct svg file */
-   handleMouseOver (button) {
-    switch(button) {
-      case "help":
-        if(this.state.helpButton === needHelp) {
-          this.setState({helpButton: needHelpHover});
+  handleMouseOver(button) {
+    switch (button) {
+      case 'help':
+        if (this.state.helpButton === needHelp) {
+          this.setState({ helpButton: needHelpHover });
         }
         break;
     }
   }
 
-  /*This function deals with the mouse leaving an icon (no longer hovering) and
+  /* This function deals with the mouse leaving an icon (no longer hovering) and
   changed img src to correct svg file */
-  handleMouseLeave (button) {
-    switch(button) {
-      case "help":
-        if(this.state.helpButton === needHelpHover) {
-          this.setState({helpButton: needHelp});
+  handleMouseLeave(button) {
+    switch (button) {
+      case 'help':
+        if (this.state.helpButton === needHelpHover) {
+          this.setState({ helpButton: needHelp });
         }
         break;
     }
@@ -1461,55 +1459,55 @@ export default class Vis extends Component {
     return (
       <div className={gstyle.helpIcons}>
         <div
-        role="button"
-        style={{ marginRight: '4em'}}
-        className={gstyle.helpIcons}
-        onClick={() => {this.setState({ helpCounter: 0 }); this.forceUpdate();} }
+          role="button"
+          style={{ marginRight: '4em' }}
+          className={gstyle.helpIcons}
+          onClick={() => { this.setState({ helpCounter: 0 }); this.forceUpdate(); }}
         >
           <img src={closeHelp} alt="close-walkthrough" />
         </div>
 
         <div
-        role="button"
-        tabIndex={0}
-        className={gstyle.helpIcons}
-        onClick={() => this.setState({ helpCounter: 1 })}
+          role="button"
+          tabIndex={0}
+          className={gstyle.helpIcons}
+          onClick={() => this.setState({ helpCounter: 1 })}
         >
           <img src={this.state.helpCounter == 2 ? help1Hover : help1} />
         </div>
 
         <div
-        role="button"
-        tabIndex={0}
-        className={gstyle.helpIcons}
-        onClick={() => this.setState({ helpCounter: 2 })}
+          role="button"
+          tabIndex={0}
+          className={gstyle.helpIcons}
+          onClick={() => this.setState({ helpCounter: 2 })}
         >
           <img src={this.state.helpCounter == 3 ? help2Hover : help2} />
         </div>
 
         <div
-        role="button"
-        tabIndex={0}
-        className={gstyle.helpIcons}
-        onClick={() => this.setState({ helpCounter: 3 })}
+          role="button"
+          tabIndex={0}
+          className={gstyle.helpIcons}
+          onClick={() => this.setState({ helpCounter: 3 })}
         >
           <img src={this.state.helpCounter == 4 ? help3Hover : help3} />
         </div>
 
         <div
-        role="button"
-        tabIndex={0}
-        className={gstyle.helpIcons}
-        onClick={() => this.setState({ helpCounter: 4 })}
+          role="button"
+          tabIndex={0}
+          className={gstyle.helpIcons}
+          onClick={() => this.setState({ helpCounter: 4 })}
         >
           <img src={this.state.helpCounter == 5 ? help4Hover : help4} />
         </div>
 
         <div
-        role="button"
-        tabIndex={0}
-        className={gstyle.helpIcons}
-        onClick={() => this.setState({ helpCounter: 5 })}
+          role="button"
+          tabIndex={0}
+          className={gstyle.helpIcons}
+          onClick={() => this.setState({ helpCounter: 5 })}
 
         >
           <img src={this.state.helpCounter == 6 ? help5Hover : help5} />
@@ -1644,10 +1642,10 @@ export default class Vis extends Component {
             className={gstyle.help}
             // on click command is still undefined outside of home page, set to issues page for now until later
             onClick={() => this.setState({ helpCounter: 1 })}
-            onMouseEnter={() => this.handleMouseOver("help")}
-            onMouseLeave={() => this.handleMouseLeave("help")}
-            >
-              <img src={this.state.helpButton} alt="needHelp" />
+            onMouseEnter={() => this.handleMouseOver('help')}
+            onMouseLeave={() => this.handleMouseLeave('help')}
+          >
+            <img src={this.state.helpButton} alt="needHelp" />
           </button>
         </div>
         <div
@@ -1664,7 +1662,8 @@ export default class Vis extends Component {
               visType === 'sankey' ?
               this.state.helpCounter === 2 ? 2000 : 1000
               : 2000
-            }}>
+            }}
+        >
           <Summary
             summary={this.state.summary}
             observations={this.state.observations}
@@ -1673,8 +1672,8 @@ export default class Vis extends Component {
           />
           <SpotlightWithToolTip
             isActive={visType === 'stackedbar' && this.state.helpCounter === 3}
-            toolTipPlacement='bottomLeft'
-            overlayStyle={{maxWidth: "850px", zIndex: '10000'}}
+            toolTipPlacement="bottomLeft"
+            overlayStyle={{ maxWidth: '850px', zIndex: '10000' }}
             toolTipTitle={<div>
               Further editing or filtering can be carried out using the buttons and dropdown menus on the top panel. Any change made here will impact how the underlying data is summarized and visualized.
               <br /><br />
@@ -1682,80 +1681,87 @@ export default class Vis extends Component {
             </div>}
           >
             <div className={styles.controls}>
-              <div className={styles.controlRow} style={{
+              <div
+                className={styles.controlRow}
+                style={{
                 display: 'flex',
                 opacity: visType === 'stackedbar' && (
                   this.state.helpCounter === 3 ||
                   this.state.helpCounter === 5
                 ) ? 1 : this.state.helpCounter === 0 ? 1 : 0.2
-              }}>
+              }}
+              >
                 {
                   visType === 'stackedbar' ? <React.Fragment>
-                  <SpotlightWithToolTip
-                    isActive={visType === 'stackedbar' && this.state.helpCounter === 5}
-                    toolTipPlacement='bottomLeft'
-                    toolTipTitle={<div>
-                      The search box on the top left will highlight the search result in the graph, and auto-complete based on the information contained within the uploaded file itself (e.g. so any search result that show up is a taxon/gene name (or other metadata text string) that is IN YOUR FILE).
-                      <br /><br />
-                      After clicking the search result (selecting an item in the list below the search field), the selected item will be highlighted in the main bar graph and a side bar will become activated (see next step).
-                    </div>}
-                    overlayStyle={{
+                    <SpotlightWithToolTip
+                      isActive={visType === 'stackedbar' && this.state.helpCounter === 5}
+                      toolTipPlacement="bottomLeft"
+                      toolTipTitle={<div>
+                        The search box on the top left will highlight the search result in the graph, and auto-complete based on the information contained within the uploaded file itself (e.g. so any search result that show up is a taxon/gene name (or other metadata text string) that is IN YOUR FILE).
+                        <br /><br />
+                        After clicking the search result (selecting an item in the list below the search field), the selected item will be highlighted in the main bar graph and a side bar will become activated (see next step).
+                                    </div>}
+                      overlayStyle={{
                       zIndex: '10000',
                     }}
-                  >
-                    {this.renderSearch()}
-                  </SpotlightWithToolTip>
-                  <div
-                    style={{ display: 'flex',
+                    >
+                      {this.renderSearch()}
+                    </SpotlightWithToolTip>
+                    <div
+                      style={{
+ display: 'flex',
                     opacity: visType === 'stackedbar' && this.state.helpCounter === 5 ? 0.2 : null
 
                   }}
-                  >
-                    {this.renderShow()}
-                    {this.renderSort()}
-                    {spacer}
-                    {this.renderToggle()}
-                  </div>
-                </React.Fragment> : visType === 'sankey' ? <React.Fragment>
-                  {this.renderSearch()}
-                  <div className={styles.inlineControl}>
-                    <label htmlFor='sankeyColors'>
-                      Link Colors:{' '}
-                      <select
-                        id='sankeyColors'
-                        value={this.state.sankeyColors}
-                        onChange={e => this.setState({ sankeyColors: e.target.value })}
-                      >
-                        {/* <option value="mix">mix</option> */}
-                        <option value="left">left</option>
-                        <option value="right">right</option>
-                      </select>
-                    </label>
+                    >
+                      {this.renderShow()}
+                      {this.renderSort()}
+                      {spacer}
+                      {this.renderToggle()}
+                    </div>
+                  </React.Fragment> : visType === 'sankey' ? <React.Fragment>
+                                               {this.renderSearch()}
+                                               <div className={styles.inlineControl}>
+                      <label htmlFor="sankeyColors">
+                                                   Link Colors:{' '}
+                                                   <select
+                          id="sankeyColors"
+                          value={this.state.sankeyColors}
+                          onChange={e => this.setState({ sankeyColors: e.target.value })}
+                        >
+                          {/* <option value="mix">mix</option> */}
+                          <option value="left">left</option>
+                          <option value="right">right</option>
+                        </select>
+                                                 </label>
 
-                  </div>
+                    </div>
 
-                </React.Fragment> : null
+                                                                                        </React.Fragment> : null
               }
               </div>
               <SpotlightWithToolTip
                 isActive={this.state.helpCounter === 2 && visType === 'sankey'}
-                style={{ boxShadow: 'rgba(255, 255, 255, 0.4) 0 0 10px 3px',
+                style={{
+ boxShadow: 'rgba(255, 255, 255, 0.4) 0 0 10px 3px',
                   // borderBottomLeftRadius: '0',
                   // borderBottomRightRadius: '0',
                 }}
               >
-                <div className={classNames(styles.controlRow, { [styles.controlRowFadeChildren]: this.state.helpCounter === 8})}
+                <div
+                  className={classNames(styles.controlRow, { [styles.controlRowFadeChildren]: this.state.helpCounter === 8 })}
                   style={{
                     paddingBottom: '0.5rem',
                     opacity: visType === 'stackedbar' && this.state.helpCounter === 5 ? 0.2 : 1,
-                  }}>
+                  }}
+                >
                   {this.renderLevelSelector(this.levels, dataLength)}
                   {visType === 'sankey' ?
                     null :
                     <React.Fragment>
-                      {this.levels.length ? <div className={styles.spacer} style={{ marginLeft: '8px'}} /> : null}
+                      {this.levels.length ? <div className={styles.spacer} style={{ marginLeft: '8px' }} /> : null}
                       {this.renderAttributesSelect()}
-                      <div className={styles.spacer} style={{ marginRight: '12px'}} />
+                      <div className={styles.spacer} style={{ marginRight: '12px' }} />
                       {this.renderTagFilter()}
                     </React.Fragment>
                   }
@@ -1775,20 +1781,20 @@ export default class Vis extends Component {
           spotlight={visType === 'sankey' ? this.state.helpCounter === 6 : this.state.helpCounter === 9}
           helpText={
             this.state.helpCounter === 6 ?
-            <div>
-              The sidebar on the left can be used to save the displayed sankey visual to file (Save button), go back to the filter window (Back button), or export a publication-read SVG image of the displayed visualization (Export SVG button).
-            </div> :
-            <div>
-              Clicking the Phinch logo in the upper left corner of the app will direct you back to the App homepage. The App automatically saves your work in progress, and you can return to your visual manipulations by re-selecting your project file on the homepage.
-              <br /><br />
-              Clicking the menu button underneath the Phinch logo will expand a side panel, revealing buttons that allow you to save your work, go back to the filter page window, or export a SVG graphic showing your customized visualization currently displayed in the main window.
-            </div>
+              <div>
+                The sidebar on the left can be used to save the displayed sankey visual to file (Save button), go back to the filter window (Back button), or export a publication-read SVG image of the displayed visualization (Export SVG button).
+              </div> :
+              <div>
+                Clicking the Phinch logo in the upper left corner of the app will direct you back to the App homepage. The App automatically saves your work in progress, and you can return to your visual manipulations by re-selecting your project file on the homepage.
+                <br /><br />
+                Clicking the menu button underneath the Phinch logo will expand a side panel, revealing buttons that allow you to save your work, go back to the filter page window, or export a SVG graphic showing your customized visualization currently displayed in the main window.
+              </div>
           }
         />
         <SpotlightWithToolTip
-          isActive={(this.state.helpCounter === 2 || this.state.helpCounter === 4 || this.state.helpCounter === 8 )&& visType === 'stackedbar'}
-          toolTipPlacement={ this.state.helpCounter === 2 ? "topLeft" : "bottomLeft"}
-          overlayStyle={{maxWidth: "950px"}}
+          isActive={(this.state.helpCounter === 2 || this.state.helpCounter === 4 || this.state.helpCounter === 8) && visType === 'stackedbar'}
+          toolTipPlacement={this.state.helpCounter === 2 ? 'topLeft' : 'bottomLeft'}
+          overlayStyle={{ maxWidth: '950px' }}
 
           toolTipTitle={
             this.state.helpCounter === 2 ? (
@@ -1816,11 +1822,11 @@ export default class Vis extends Component {
           }
         >
           <div
-            className={classNames(gstyle.panel,  gstyle.noscrollbar)}
+            className={classNames(gstyle.panel, gstyle.noscrollbar)}
             style={{
               width: this.metrics.chartWidth + this.metrics.nonbarWidth,
             }}
-            >
+          >
             { visType === 'stackedbar' ? (
               <div
                 className={styles.axis}
@@ -1865,7 +1871,7 @@ export default class Vis extends Component {
               </div>
             ) : null }
             <div
-              className={classNames(gstyle.panel,  gstyle.noscrollbar, {
+              className={classNames(gstyle.panel, gstyle.noscrollbar, {
                 [gstyle.panelNoYScroll]: visType === 'sankey'
               })}
               style={{
@@ -1920,7 +1926,8 @@ export default class Vis extends Component {
                     <Sankey
                       setRef={r => { this._svg = r; }}
 
-                      data={this.state.data} preData={this.state.preData}
+                      data={this.state.data}
+                      preData={this.state.preData}
                       width={this.metrics.chartWidth + this.metrics.nonbarWidth}
                       height={this.metrics.chartHeight}
                       colors={this.state.sankeyColors}
@@ -1989,12 +1996,12 @@ export default class Vis extends Component {
         />
 
         <SpotlightWithToolTip
-          isActive = {this.state.helpCounter > 0}
+          isActive={this.state.helpCounter > 0}
           inheritParentBackgroundColor={false}
-          toolTipTitle={"* mouse click anywhere to advance"}
-          overlayStyle={{zIndex: '1001'}}
-          innerStyle={{color: 'white', fontWeight: '400', fontSize: '14px'}}
-          style={{boxShadow: 'none'}}
+          toolTipTitle="* mouse click anywhere to advance"
+          overlayStyle={{ zIndex: '1001' }}
+          innerStyle={{ color: 'white', fontWeight: '400', fontSize: '14px' }}
+          style={{ boxShadow: 'none' }}
         >
           <div className={gstyle.helpButtons}>
             {this.state.helpCounter > 0 ? this.makeHelpButtons() : null}

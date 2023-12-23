@@ -2,44 +2,44 @@
  * Builds the DLL for development electron renderer process
  */
 
-require("@babel/register");
+require('@babel/register');
 
-const webpack = require("webpack");
-const path = require("path");
-const { dependencies } = require("./package.json");
-const CheckNodeEnv = require("./internals/scripts/CheckNodeEnv");
+const webpack = require('webpack');
+const path = require('path');
+const { dependencies } = require('./package.json');
+const CheckNodeEnv = require('./internals/scripts/CheckNodeEnv');
 
-CheckNodeEnv("development");
+CheckNodeEnv('development');
 
-const dist = path.resolve(process.cwd(), "dll");
+const dist = path.resolve(process.cwd(), 'dll');
 
 module.exports = {
-  mode: "development",
+  mode: 'development',
 
   context: process.cwd(),
 
-  devtool: "eval",
+  devtool: 'eval',
 
   resolve: {
-    extensions: [".js", ".jsx", ".json"],
-    modules: [path.join(__dirname, "app"), "node_modules"],
+    extensions: ['.js', '.jsx', '.json'],
+    modules: [path.join(__dirname, 'app'), 'node_modules'],
   },
 
-  target: "electron-renderer",
+  target: 'electron-renderer',
 
-  externals: ["fsevents", "crypto-browserify"],
+  externals: ['fsevents', 'crypto-browserify'],
 
   entry: {
     renderer: Object.keys(dependencies || {}).filter(
-      (dependency) => dependency !== "font-awesome"
+      (dependency) => dependency !== 'font-awesome'
     ),
   },
 
   output: {
-    library: "renderer",
+    library: 'renderer',
     path: dist,
-    filename: "[name].dev.dll.js",
-    libraryTarget: "var",
+    filename: '[name].dev.dll.js',
+    libraryTarget: 'var',
   },
 
   /**
@@ -51,28 +51,28 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             cacheDirectory: true,
             presets: [
               // "@babel/preset-env",
               [
-                "@babel/preset-env",
+                '@babel/preset-env',
                 {
                   targets: { node: 7 },
-                  useBuiltIns: "usage",
+                  useBuiltIns: 'usage',
                   corejs: 3,
                 },
               ],
-              "@babel/preset-react",
-              "@babel/preset-flow",
+              '@babel/preset-react',
+              '@babel/preset-flow',
             ],
             plugins: [
               // Here, we include babel plugins that are only required for the
               // renderer process. The 'transform-*' plugins must be included
               // before react-hot-loader/babel
-              "@babel/plugin-transform-classes",
-              "react-hot-loader/babel",
+              '@babel/plugin-transform-classes',
+              'react-hot-loader/babel',
             ],
           },
         },
@@ -81,10 +81,10 @@ module.exports = {
         test: /\.global\.css$/,
         use: [
           {
-            loader: "style-loader",
+            loader: 'style-loader',
           },
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               sourceMap: true,
             },
@@ -95,15 +95,15 @@ module.exports = {
         test: /^((?!\.global).)*\.css$/,
         use: [
           {
-            loader: "style-loader",
+            loader: 'style-loader',
           },
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               modules: true,
               sourceMap: true,
               importLoaders: 1,
-              localIdentName: "[name]__[local]__[hash:base64:5]",
+              localIdentName: '[name]__[local]__[hash:base64:5]',
             },
           },
         ],
@@ -113,16 +113,16 @@ module.exports = {
         test: /\.global\.(scss|sass)$/,
         use: [
           {
-            loader: "style-loader",
+            loader: 'style-loader',
           },
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               sourceMap: true,
             },
           },
           {
-            loader: "sass-loader",
+            loader: 'sass-loader',
           },
         ],
       },
@@ -131,19 +131,19 @@ module.exports = {
         test: /^((?!\.global).)*\.(scss|sass)$/,
         use: [
           {
-            loader: "style-loader",
+            loader: 'style-loader',
           },
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               modules: true,
               sourceMap: true,
               importLoaders: 1,
-              localIdentName: "[name]__[local]__[hash:base64:5]",
+              localIdentName: '[name]__[local]__[hash:base64:5]',
             },
           },
           {
-            loader: "sass-loader",
+            loader: 'sass-loader',
           },
         ],
       },
@@ -151,10 +151,10 @@ module.exports = {
       {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           options: {
             limit: 10000,
-            mimetype: "application/font-woff",
+            mimetype: 'application/font-woff',
           },
         },
       },
@@ -162,10 +162,10 @@ module.exports = {
       {
         test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           options: {
             limit: 10000,
-            mimetype: "application/font-woff",
+            mimetype: 'application/font-woff',
           },
         },
       },
@@ -173,46 +173,46 @@ module.exports = {
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           options: {
             limit: 10000,
-            mimetype: "application/octet-stream",
+            mimetype: 'application/octet-stream',
           },
         },
       },
       // EOT Font
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        use: "file-loader",
+        use: 'file-loader',
       },
       // SVG Font
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           options: {
             limit: 10000,
-            mimetype: "image/svg+xml",
+            mimetype: 'image/svg+xml',
           },
         },
       },
       // Common Image Formats
       {
         test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
-        use: "url-loader",
+        use: 'url-loader',
       },
       // CLI
       {
-        test: path.resolve(__dirname, "node_modules/npm/bin/npm-cli.js"),
-        loader: "shebang-loader",
+        test: path.resolve(__dirname, 'node_modules/npm/bin/npm-cli.js'),
+        loader: 'shebang-loader',
       },
     ],
   },
 
   plugins: [
     new webpack.DllPlugin({
-      path: path.join(dist, "[name].json"),
-      name: "[name]",
+      path: path.join(dist, '[name].json'),
+      name: '[name]',
     }),
 
     /**
@@ -225,15 +225,15 @@ module.exports = {
      * development checks
      */
     new webpack.EnvironmentPlugin({
-      NODE_ENV: "development",
+      NODE_ENV: 'development',
     }),
 
     new webpack.LoaderOptionsPlugin({
       debug: true,
       options: {
-        context: path.resolve(process.cwd(), "app"),
+        context: path.resolve(process.cwd(), 'app'),
         output: {
-          path: path.resolve(process.cwd(), "dll"),
+          path: path.resolve(process.cwd(), 'dll'),
         },
       },
     }),

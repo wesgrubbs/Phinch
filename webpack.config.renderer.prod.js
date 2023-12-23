@@ -1,24 +1,24 @@
-require("@babel/register");
+require('@babel/register');
 
-const path = require("path");
-const webpack = require("webpack");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
-const TerserPlugin = require("terser-webpack-plugin");
-const CheckNodeEnv = require("./internals/scripts/CheckNodeEnv");
+const path = require('path');
+const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const TerserPlugin = require('terser-webpack-plugin');
+const CheckNodeEnv = require('./internals/scripts/CheckNodeEnv');
 
-CheckNodeEnv("production");
+CheckNodeEnv('production');
 
 module.exports = {
-  mode: "production",
+  mode: 'production',
 
-  target: "electron-renderer",
+  target: 'electron-renderer',
 
-  entry: "./app/index",
+  entry: './app/index',
 
   resolve: {
-    extensions: [".js", ".jsx", ".json"],
-    modules: [path.join(__dirname, "app"), "node_modules"],
+    extensions: ['.js', '.jsx', '.json'],
+    modules: [path.join(__dirname, 'app'), 'node_modules'],
   },
 
   optimization: {
@@ -31,9 +31,9 @@ module.exports = {
   },
 
   output: {
-    path: path.join(__dirname, "app/dist"),
-    publicPath: "./dist/",
-    filename: "renderer.prod.js",
+    path: path.join(__dirname, 'app/dist'),
+    publicPath: './dist/',
+    filename: 'renderer.prod.js',
   },
 
   module: {
@@ -42,21 +42,21 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             cacheDirectory: true,
             presets: [
               // "@babel/preset-env",
               [
-                "@babel/preset-env",
+                '@babel/preset-env',
                 {
                   targets: { node: 7 },
-                  useBuiltIns: "usage",
+                  useBuiltIns: 'usage',
                   corejs: 3,
                 },
               ],
-              "@babel/preset-react",
-              "@babel/preset-flow",
+              '@babel/preset-react',
+              '@babel/preset-flow',
             ],
           },
         },
@@ -68,10 +68,10 @@ module.exports = {
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              publicPath: "./",
+              publicPath: './',
             },
           },
-          "css-loader",
+          'css-loader',
         ],
       },
       // Pipe other styles through css modules and append to style.css
@@ -79,7 +79,7 @@ module.exports = {
         test: /^((?!\.global).)*\.css$/,
         use: [
           // MiniCssExtractPlugin.loader,
-          "css-loader",
+          'css-loader',
         ],
       },
       // Add SASS support  - compile all .global.scss files and pipe it to style.css
@@ -99,7 +99,7 @@ module.exports = {
         //   ],
         //   fallback: "style-loader"
         // })
-        use: ["sass-loader"],
+        use: ['sass-loader'],
       },
       // Add SASS support  - compile all other .scss files and pipe it to style.css
       {
@@ -115,17 +115,17 @@ module.exports = {
           //     }
           //   }
           // },
-          "sass-loader",
+          'sass-loader',
         ],
       },
       // WOFF Font
       {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           options: {
             limit: 10000,
-            mimetype: "application/font-woff",
+            mimetype: 'application/font-woff',
           },
         },
       },
@@ -133,10 +133,10 @@ module.exports = {
       {
         test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           options: {
             limit: 10000,
-            mimetype: "application/font-woff",
+            mimetype: 'application/font-woff',
           },
         },
       },
@@ -144,42 +144,42 @@ module.exports = {
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           options: {
             limit: 10000,
-            mimetype: "application/octet-stream",
+            mimetype: 'application/octet-stream',
           },
         },
       },
       // EOT Font
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        use: "file-loader",
+        use: 'file-loader',
       },
       // SVG Font
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           options: {
             limit: 10000,
-            mimetype: "image/svg+xml",
+            mimetype: 'image/svg+xml',
           },
         },
       },
       // Common Image Formats
       {
         test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
-        use: "url-loader",
+        use: 'url-loader',
       },
       {
         test: /\.svg$/,
         use: [
           {
-            loader: "url-loader",
+            loader: 'url-loader',
             options: {
               limit: 8192, // You can adjust this limit based on your needs
-              name: "images/[name].[hash:8].[ext]",
+              name: 'images/[name].[hash:8].[ext]',
             },
           },
         ],
@@ -198,17 +198,17 @@ module.exports = {
      * development checks
      */
     new webpack.EnvironmentPlugin({
-      NODE_ENV: "production",
+      NODE_ENV: 'production',
     }),
 
     new MiniCssExtractPlugin({
-      filename: "style.css",
+      filename: 'style.css',
     }),
 
     new BundleAnalyzerPlugin({
       analyzerMode:
-        process.env.OPEN_ANALYZER === "true" ? "server" : "disabled",
-      openAnalyzer: process.env.OPEN_ANALYZER === "true",
+        process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',
+      openAnalyzer: process.env.OPEN_ANALYZER === 'true',
     }),
   ],
 };

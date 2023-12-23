@@ -11,7 +11,7 @@ import gstyle from './general.css';
 import classNames from 'classnames';
 
 export default class FilterRow extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       deleting: false,
@@ -125,7 +125,7 @@ export default class FilterRow extends Component {
       `${styles.row} ${styles.grey}`
     ) : styles.row;
 
-    const tableWidth = this.props.tableWidth - 300;//this scales down tableWidth for the drag, close, and frequency chart cells
+    const tableWidth = this.props.tableWidth - 300;// this scales down tableWidth for the drag, close, and frequency chart cells
 
     return (
       <div
@@ -143,7 +143,7 @@ export default class FilterRow extends Component {
             width: tableWidth * this.props.columnWidths.order,
             textAlign: 'right',
           }}
-          >
+        >
           {(this.props.data.order !== undefined) ? this.props.data.order.toLocaleString() : ''}
         </div>
         <div
@@ -151,7 +151,7 @@ export default class FilterRow extends Component {
           style={{
             width: tableWidth * this.props.columnWidths.phinchName,
           }}
-          >
+        >
           <input
             data-tip={this.state.focused ? null : 'Click to edit Phinch name'}
             className={classNames(gstyle.input, styles.phinchNameInput)}
@@ -160,7 +160,7 @@ export default class FilterRow extends Component {
             onFocus={e => this.setFocus()}
             onBlur={e => this.removeFocus()}
             onChange={(e) => this.props.updatePhinchName(e, this.props.data)}
-            />
+          />
         </div>
         <div
           className={styles.cell}
@@ -168,7 +168,7 @@ export default class FilterRow extends Component {
             width: tableWidth * this.props.columnWidths.biomid,
             textAlign: 'right',
           }}
-          >
+        >
           {this.props.data.biomid}
         </div>
         <div
@@ -176,7 +176,7 @@ export default class FilterRow extends Component {
           style={{
             width: tableWidth * this.props.columnWidths.sampleName,
           }}
-          >
+        >
           {this.props.data.sampleName}
         </div>
         <div
@@ -185,7 +185,7 @@ export default class FilterRow extends Component {
             width: (tableWidth * this.props.columnWidths.reads),
             textAlign: 'right',
           }}
-          >
+        >
           {(this.props.data.reads !== undefined) ? this.props.data.reads.toLocaleString() : ''}
         </div>
         <div className={styles.cell}>
@@ -194,7 +194,7 @@ export default class FilterRow extends Component {
             value={this.props.data.reads}
             width={120 * 2}
             height={18 * 2}
-            />
+          />
         </div>
         <div className={styles.cell}>
           <div className={`${styles.delete} ${styles.drag}`}>
