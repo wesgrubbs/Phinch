@@ -1,8 +1,3 @@
-/* eslint-disable import/first */
-/**
- * Build config for electron renderer process
- */
-
 require("@babel/register");
 
 const path = require("path");
@@ -17,30 +12,28 @@ CheckNodeEnv("production");
 module.exports = {
   mode: "production",
 
-  devtool: "source-map",
-
   target: "electron-renderer",
 
   entry: "./app/index",
 
   resolve: {
     extensions: [".js", ".jsx", ".json"],
-    modules: [path.join(__dirname, "app"), "node_modules"]
+    modules: [path.join(__dirname, "app"), "node_modules"],
   },
 
   optimization: {
     minimizer: [
       new TerserPlugin({
         parallel: true,
-        sourceMap: true
-      })
-    ]
+        sourceMap: true,
+      }),
+    ],
   },
 
   output: {
     path: path.join(__dirname, "app/dist"),
     publicPath: "./dist/",
-    filename: "renderer.prod.js"
+    filename: "renderer.prod.js",
   },
 
   module: {
@@ -55,10 +48,10 @@ module.exports = {
             presets: [
               "@babel/preset-env",
               "@babel/preset-react",
-              "@babel/preset-flow"
-            ]
-          }
-        }
+              "@babel/preset-flow",
+            ],
+          },
+        },
       },
       // Extract all .global.css to style.css as is
       {
@@ -67,19 +60,19 @@ module.exports = {
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              publicPath: "./"
-            }
+              publicPath: "./",
+            },
           },
-          "css-loader"
-        ]
+          "css-loader",
+        ],
       },
       // Pipe other styles through css modules and append to style.css
       {
         test: /^((?!\.global).)*\.css$/,
         use: [
           // MiniCssExtractPlugin.loader,
-          "css-loader"
-        ]
+          "css-loader",
+        ],
       },
       // Add SASS support  - compile all .global.scss files and pipe it to style.css
       {
@@ -98,7 +91,7 @@ module.exports = {
         //   ],
         //   fallback: "style-loader"
         // })
-        use: ["sass-loader"]
+        use: ["sass-loader"],
       },
       // Add SASS support  - compile all other .scss files and pipe it to style.css
       {
@@ -114,8 +107,8 @@ module.exports = {
           //     }
           //   }
           // },
-          "sass-loader"
-        ]
+          "sass-loader",
+        ],
       },
       // WOFF Font
       {
@@ -124,9 +117,9 @@ module.exports = {
           loader: "url-loader",
           options: {
             limit: 10000,
-            mimetype: "application/font-woff"
-          }
-        }
+            mimetype: "application/font-woff",
+          },
+        },
       },
       // WOFF2 Font
       {
@@ -135,9 +128,9 @@ module.exports = {
           loader: "url-loader",
           options: {
             limit: 10000,
-            mimetype: "application/font-woff"
-          }
-        }
+            mimetype: "application/font-woff",
+          },
+        },
       },
       // TTF Font
       {
@@ -146,14 +139,14 @@ module.exports = {
           loader: "url-loader",
           options: {
             limit: 10000,
-            mimetype: "application/octet-stream"
-          }
-        }
+            mimetype: "application/octet-stream",
+          },
+        },
       },
       // EOT Font
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        use: "file-loader"
+        use: "file-loader",
       },
       // SVG Font
       {
@@ -162,14 +155,14 @@ module.exports = {
           loader: "url-loader",
           options: {
             limit: 10000,
-            mimetype: "image/svg+xml"
-          }
-        }
+            mimetype: "image/svg+xml",
+          },
+        },
       },
       // Common Image Formats
       {
         test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
-        use: "url-loader"
+        use: "url-loader",
       },
       {
         test: /\.svg$/,
@@ -178,12 +171,12 @@ module.exports = {
             loader: "url-loader",
             options: {
               limit: 8192, // You can adjust this limit based on your needs
-              name: "images/[name].[hash:8].[ext]"
-            }
-          }
-        ]
-      }
-    ]
+              name: "images/[name].[hash:8].[ext]",
+            },
+          },
+        ],
+      },
+    ],
   },
 
   plugins: [
@@ -197,17 +190,17 @@ module.exports = {
      * development checks
      */
     new webpack.EnvironmentPlugin({
-      NODE_ENV: "production"
+      NODE_ENV: "production",
     }),
 
     new MiniCssExtractPlugin({
-      filename: "style.css"
+      filename: "style.css",
     }),
 
     new BundleAnalyzerPlugin({
       analyzerMode:
         process.env.OPEN_ANALYZER === "true" ? "server" : "disabled",
-      openAnalyzer: process.env.OPEN_ANALYZER === "true"
-    })
-  ]
+      openAnalyzer: process.env.OPEN_ANALYZER === "true",
+    }),
+  ],
 };

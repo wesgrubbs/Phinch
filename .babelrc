@@ -17,7 +17,7 @@
     //   // "plugins": ["@babel/plugin-transform-react-jsx-source"]
     // },
     "development": {
-      "plugins": ["@babel/plugin-transform-classes"]
+      "plugins": ["@babel/plugin-proposal-class-properties"]
     }
   }
 }
