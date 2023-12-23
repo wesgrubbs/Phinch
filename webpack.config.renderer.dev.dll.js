@@ -57,7 +57,15 @@ module.exports = {
           options: {
             cacheDirectory: true,
             presets: [
-              "@babel/preset-env",
+              // "@babel/preset-env",
+              [
+                "@babel/preset-env",
+                {
+                  targets: { node: 7 },
+                  useBuiltIns: "usage",
+                  corejs: 3,
+                },
+              ],
               "@babel/preset-react",
               "@babel/preset-flow",
             ],

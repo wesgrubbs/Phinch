@@ -1,20 +1,19 @@
+/* eslint-disable import/first */
 /**
  * Webpack config for production electron main process
  */
 
-import webpack from "webpack";
-import merge from "webpack-merge";
-import TerserPlugin from "terser-webpack-plugin";
-import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
-import baseConfig from "./webpack.config.base";
-import CheckNodeEnv from "./internals/scripts/CheckNodeEnv";
+require("@babel/register");
+
+const webpack = require("webpack");
+const TerserPlugin = require("terser-webpack-plugin");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const CheckNodeEnv = require("./internals/scripts/CheckNodeEnv");
 
 CheckNodeEnv("production");
 
-export default merge.smart(baseConfig, {
+module.exports = {
   mode: "production",
-
-  devtool: "source-map",
 
   target: "electron-main",
 
@@ -22,23 +21,59 @@ export default merge.smart(baseConfig, {
 
   output: {
     path: __dirname,
-    filename: "./app/main.prod.js"
+    filename: "./app/main.prod.js",
   },
 
   optimization: {
     minimizer: [
       new TerserPlugin({
         parallel: true,
-        sourceMap: true
-      })
-    ]
+        sourceMap: true,
+      }),
+    ],
+  },
+
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/, // .js, .jsx
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            cacheDirectory: true,
+            presets: [
+              // "@babel/preset-env",
+              [
+                "@babel/preset-env",
+                {
+                  targets: { node: 7 },
+                  useBuiltIns: "usage",
+                  corejs: 3,
+                },
+              ],
+              "@babel/preset-react",
+              "@babel/preset-flow",
+            ],
+            plugins: [
+              // Here, we include babel plugins that are only required for the
+              // renderer process. The 'transform-*' plugins must be included
+              // before react-hot-loader/babel
+              // "@babel/plugin-transform-classes",
+              "@babel/plugin-proposal-class-properties",
+              "./node_modules/react-hot-loader/babel",
+            ],
+          },
+        },
+      },
+    ],
   },
 
   plugins: [
     new BundleAnalyzerPlugin({
       analyzerMode:
         process.env.OPEN_ANALYZER === "true" ? "server" : "disabled",
-      openAnalyzer: process.env.OPEN_ANALYZER === "true"
+      openAnalyzer: process.env.OPEN_ANALYZER === "true",
     }),
 
     /**
@@ -52,8 +87,8 @@ export default merge.smart(baseConfig, {
      */
     new webpack.EnvironmentPlugin({
       NODE_ENV: "production",
-      DEBUG_PROD: "false"
-    })
+      DEBUG_PROD: "false",
+    }),
   ],
 
   /**
@@ -63,6 +98,6 @@ export default merge.smart(baseConfig, {
    */
   node: {
     __dirname: false,
-    __filename: false
-  }
-});
+    __filename: false,
+  },
+};
