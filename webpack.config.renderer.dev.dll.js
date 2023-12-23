@@ -6,8 +6,6 @@ require("@babel/register");
 
 const webpack = require("webpack");
 const path = require("path");
-const merge = require("webpack-merge");
-const baseConfig = require("./webpack.config.base");
 const { dependencies } = require("./package.json");
 const CheckNodeEnv = require("./internals/scripts/CheckNodeEnv");
 
