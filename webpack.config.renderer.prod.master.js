@@ -1,34 +1,24 @@
-require('@babel/register');
+/**
+ * Build config for electron renderer process
+ */
 
-const path = require('path');
-const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const TerserPlugin = require('terser-webpack-plugin');
-const CheckNodeEnv = require('./internals/scripts/CheckNodeEnv');
+import path from 'path';
+import webpack from 'webpack';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import merge from 'webpack-merge';
+import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
+import baseConfig from './webpack.config.base';
+import CheckNodeEnv from './internals/scripts/CheckNodeEnv';
 
 CheckNodeEnv('production');
 
-module.exports = {
-  mode: 'production',
+export default merge.smart(baseConfig, {
+  devtool: 'source-map',
 
   target: 'electron-renderer',
 
   entry: './app/index',
-
-  resolve: {
-    extensions: ['.js', '.jsx', '.json'],
-    modules: [path.join(__dirname, 'app'), 'node_modules'],
-  },
-
-  optimization: {
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-        sourceMap: true,
-      }),
-    ],
-  },
 
   output: {
     path: path.join(__dirname, 'app/dist'),
@@ -38,85 +28,72 @@ module.exports = {
 
   module: {
     rules: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-            presets: [
-              // "@babel/preset-env",
-              [
-                '@babel/preset-env',
-                {
-                  targets: { node: 7 },
-                  useBuiltIns: 'usage',
-                  corejs: 3,
-                },
-              ],
-              '@babel/preset-react',
-              '@babel/preset-flow',
-            ],
-          },
-        },
-      },
       // Extract all .global.css to style.css as is
       {
         test: /\.global\.css$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
+        use: ExtractTextPlugin.extract({
+          publicPath: './',
+          use: {
+            loader: 'css-loader',
             options: {
-              publicPath: './',
+              minimize: true,
             },
           },
-          'css-loader',
-        ],
+          fallback: 'style-loader',
+        }),
       },
       // Pipe other styles through css modules and append to style.css
       {
         test: /^((?!\.global).)*\.css$/,
-        use: [
-          // MiniCssExtractPlugin.loader,
-          'css-loader',
-        ],
+        use: ExtractTextPlugin.extract({
+          use: {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              minimize: true,
+              importLoaders: 1,
+              localIdentName: '[name]__[local]__[hash:base64:5]',
+            },
+          },
+        }),
       },
       // Add SASS support  - compile all .global.scss files and pipe it to style.css
       {
         test: /\.global\.(scss|sass)$/,
-        // use: ExtractTextPlugin.extract({
-        //   use: [
-        //     {
-        //       loader: "css-loader",
-        //       options: {
-        //         minimize: true
-        //       }
-        //     },
-        //     {
-        //       loader: "sass-loader"
-        //     }
-        //   ],
-        //   fallback: "style-loader"
-        // })
-        use: ['sass-loader'],
+        use: ExtractTextPlugin.extract({
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                minimize: true,
+              },
+            },
+            {
+              loader: 'sass-loader',
+            },
+          ],
+          fallback: 'style-loader',
+        }),
       },
       // Add SASS support  - compile all other .scss files and pipe it to style.css
       {
         test: /^((?!\.global).)*\.(scss|sass)$/,
-        use: [
-          // {
-          //   loader: MiniCssExtractPlugin.loader,
-          //   options: {
-          //     esModule: true,
-          //     modules: {
-          //       namedExport: true,
-          //       localIdentName: "[name]__[local]__[hash:base64:5]"
-          //     }
-          //   }
-          // },
-          'sass-loader',
-        ],
+        use: ExtractTextPlugin.extract({
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                minimize: true,
+                importLoaders: 1,
+                localIdentName: '[name]__[local]__[hash:base64:5]',
+              },
+            },
+            {
+              loader: 'sass-loader',
+            },
+          ],
+        }),
       },
       // WOFF Font
       {
@@ -172,18 +149,6 @@ module.exports = {
         test: /\.(?:ico|gif|png|jpg|jpeg|webp)$/,
         use: 'url-loader',
       },
-      {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192, // You can adjust this limit based on your needs
-              name: 'images/[name].[hash:8].[ext]',
-            },
-          },
-        ],
-      },
     ],
   },
 
@@ -201,9 +166,12 @@ module.exports = {
       NODE_ENV: 'production',
     }),
 
-    new MiniCssExtractPlugin({
-      filename: 'style.css',
+    new UglifyJSPlugin({
+      parallel: true,
+      sourceMap: true,
     }),
+
+    new ExtractTextPlugin('style.css'),
 
     new BundleAnalyzerPlugin({
       analyzerMode:
@@ -211,4 +179,4 @@ module.exports = {
       openAnalyzer: process.env.OPEN_ANALYZER === 'true',
     }),
   ],
-};
+});

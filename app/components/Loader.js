@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from 'react';
 
-import loading from 'images/loading.gif';
+import loading from '../images/loading.gif';
 
 import styles from './Loader.css';
 import palette from '../palette';
@@ -24,13 +24,14 @@ export default function Loader(props) {
   }, [loading]);
   return loading ? (
     <div className={styles.loaderWrapper}>
-      <div className={styles['lds-ring']} >
+      <div className={styles['lds-ring']}>
         <div style={{ borderTopColor: loaderColor }} />
         <div style={{ borderTopColor: loaderColor }} />
         <div style={{ borderTopColor: loaderColor }} />
         <div style={{ borderTopColor: loaderColor }} />
       </div>
     </div>
-  ) : '';
+  ) : (
+    ''
+  );
 }
-
