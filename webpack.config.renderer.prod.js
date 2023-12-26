@@ -2,20 +2,17 @@
  * Build config for electron renderer process
  */
 
-import path from 'path';
-import webpack from 'webpack';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import merge from 'webpack-merge';
-import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
-import baseConfig from './webpack.config.base';
-import CheckNodeEnv from './internals/scripts/CheckNodeEnv';
+require('@babel/register');
+
+const path = require('path');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const CheckNodeEnv = require('./internals/scripts/CheckNodeEnv');
 
 CheckNodeEnv('production');
 
-export default merge.smart(baseConfig, {
-  devtool: 'source-map',
-
+module.exports = {
   target: 'electron-renderer',
 
   entry: './app/index',
@@ -26,8 +23,37 @@ export default merge.smart(baseConfig, {
     filename: 'renderer.prod.js',
   },
 
+  resolve: {
+    extensions: ['.js', '.jsx', '.json'],
+    modules: [path.join(__dirname, 'app'), 'node_modules'],
+  },
+
   module: {
     rules: [
+      {
+        test: /\.jsx?$/, // .js, .jsx
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+            presets: [
+              // "@babel/preset-env",
+              [
+                '@babel/preset-env',
+                {
+                  targets: { node: 7 },
+                  useBuiltIns: 'usage',
+                  corejs: 3,
+                },
+              ],
+              '@babel/preset-react',
+              '@babel/preset-flow',
+            ],
+            plugins: ['@babel/plugin-proposal-class-properties'],
+          },
+        },
+      },
       // Extract all .global.css to style.css as is
       {
         test: /\.global\.css$/,
@@ -166,10 +192,7 @@ export default merge.smart(baseConfig, {
       NODE_ENV: 'production',
     }),
 
-    new UglifyJSPlugin({
-      parallel: true,
-      sourceMap: true,
-    }),
+    // TODO: add terser
 
     new ExtractTextPlugin('style.css'),
 
@@ -179,4 +202,4 @@ export default merge.smart(baseConfig, {
       openAnalyzer: process.env.OPEN_ANALYZER === 'true',
     }),
   ],
-});
+};
