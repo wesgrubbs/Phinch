@@ -31,7 +31,7 @@ import { findLastKey } from 'lodash-es';
 export default function SideBar(props) {
   const { inAboutPage } = props;
   // const version = remote.app.getVersion(); // this gives the electron version which isn't what we want
-  const version = '2.1'; // hard code fow now..
+  const version = '2.2'; // hard code fow now..
   const links = LinkList(props.context);
   const helpIcon = props.context.state.helpIcon;
   const help1Icon = help1;
