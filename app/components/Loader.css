@@ -50,6 +50,7 @@
 }
 .loaderContent {
   text-align: center; /* Center the content */
+position: relative;
 }
 
 .loadingText {
@@ -57,4 +58,5 @@
   color: #ffff; 
   font-size: 16px; 
   font-weight: 300m;
+  text-align: center;
 }

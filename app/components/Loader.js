@@ -28,7 +28,8 @@ export default function Loader(props) {
           <div style={{ borderTopColor: loaderColor }} />
           <div style={{ borderTopColor: loaderColor }} />
         </div>
-        <p className={styles.loadingText}>File is parsing into Phinch. This make take several minutes. </p> 
+        <p className={styles.loadingText}>File is parsing into Phinch. <br/> This make take several minutes. </p>
+        
       </div>
     </div>
   ) : (
