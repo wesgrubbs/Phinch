@@ -7,9 +7,11 @@ import logo from 'images/phinch.svg';
 import back from 'images/back.svg';
 import hoverBack from 'images/backArrowW.svg';
 import upload from 'images/upload.svg';
-import browseOn from 'images/browseOn.svg';
-import browseOff from 'images/browseOff.svg';
+import btn_browse_rollover from 'images/btn_browse_rollover.png';
+import btn_browseOff from 'images/btn_browseOff.png';
 import filterOn from 'images/filterOn.svg';
+import btn_filter_data from 'images/btn_filter_data.png';
+import btn_filterdata_default from  'images/btn_filterdata_default.png'
 import filterOff from 'images/filterOff.svg';
 import flagshipOn from 'images/flagshipOn.png';
 import flagshipOff from 'images/flagshipOff.png';
@@ -102,8 +104,8 @@ export default class NewProject extends Component {
       width: window.innerWidth,
       height: window.innerHeight,
       showLeftSidebar: true,
-      browse: browseOff,
-      filter: filterOff,
+      browse: btn_browseOff,
+      filter: btn_filterdata_default,
       flagship: flagshipOff,
       helpButton: needHelp,
       backArrow: back,
@@ -287,13 +289,13 @@ export default class NewProject extends Component {
   handleMouseOver(button) {
     switch (button) {
       case 'browse':
-        if (this.state.browse === browseOff) {
-          this.setState({ browse: browseOn });
+        if (this.state.browse === btn_browseOff) {
+          this.setState({ browse: btn_browse_rollover });
         }
         break;
       case 'filter':
-        if (this.state.filter === filterOff) {
-          this.setState({ filter: filterOn });
+        if (this.state.filter === btn_filterdata_default) {
+          this.setState({ filter: btn_filter_data });
         }
         break;
       case 'flagship':
@@ -317,13 +319,13 @@ export default class NewProject extends Component {
   handleMouseLeave(button) {
     switch (button) {
       case 'browse':
-        if (this.state.browse === browseOn) {
-          this.setState({ browse: browseOff });
+        if (this.state.browse === btn_browse_rollover) {
+          this.setState({ browse: btn_browseOff });
         }
         break;
       case 'filter':
-        if (this.state.filter === filterOn) {
-          this.setState({ filter: filterOff });
+        if (this.state.filter === btn_filter_data) {
+          this.setState({ filter: btn_filterdata_default });
         }
         break;
       case 'flagship':
