@@ -1,0 +1,30 @@
+.group {
+  color: #000;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0.25em 0 0.25em 1rem;
+}
+
+.row {
+  padding: 4px 0;
+}
+
+.toggle {
+  display: inline-block;
+  text-decoration: underline;
+  cursor: pointer;
+  padding-right: 0.5rem;
+  color: #808080;
+}
+
+.toggle:hover {
+  color: #000;
+}
+
+.name {
+  font-size: 14px;
+  font-weight: 600;
+  vertical-align: top;
+  margin-right: 1rem;
+  overflow-wrap: break-word;
+}

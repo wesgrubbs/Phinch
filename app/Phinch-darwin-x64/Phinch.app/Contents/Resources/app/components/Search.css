@@ -1,0 +1,55 @@
+.container {
+  display: inline-block;
+  width: 314px;
+  height: 24px;
+  color: #b2b2b2;
+}
+
+.input {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 4px;
+  border: 1px solid #f09e6a;
+  text-align: right;
+  padding: 0.25rem;
+  width: 304px;
+  height: 24px;
+  line-height: 24px;
+}
+
+.suggestionsContainer {
+  max-height: calc(100vh - 100px);
+  max-width: calc(100vw - 128px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: fixed;
+  margin-left: 0;
+  margin-top: 0.25rem;
+  background-color: #000;
+  border: none;
+  color: #fff;
+  z-index: 20000;
+}
+
+.suggestionsContainer::-webkit-scrollbar-thumb {
+  border: 2px solid #000;
+}
+
+.suggestionsList {
+  margin: 0;
+  padding: 0;
+}
+
+.suggestion {
+  background-color: #333;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.suggestionHighlighted {
+  background-color: #F09E6A;
+}

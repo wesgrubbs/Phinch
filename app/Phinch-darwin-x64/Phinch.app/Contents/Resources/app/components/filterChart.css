@@ -1,0 +1,56 @@
+.range {
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.mark {
+  display: inline-block;
+  padding-top: 4px;
+  padding-bottom: 1rem;
+  font-size: 13px;
+  font-weight: 500;
+  overflow: visible;
+  color: #ccc;
+  white-space: nowrap;
+}
+
+.svg {
+  margin: 0 24px;
+  margin-top: 8px;
+}
+
+.filterChart {
+  font-family: 'Open Sans';
+  vertical-align: top;
+  font-size: 13px;
+  font-weight: 500;
+  color: white;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+}
+.name {
+  font-size: 15px;
+  font-weight: 700;
+  vertical-align: top;
+  margin-right: 1rem;
+  overflow-wrap: break-word;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-top: 0em;
+}
+
+.toggleLabel {
+  vertical-align: top;
+  display: inline-block;
+  height: 18px;
+  font-size: 12px;
+}
